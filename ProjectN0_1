@@ -1,0 +1,132 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Class to represent a book
+class Book {
+private:
+    string title;
+    string author;
+    string category;
+    string borrower;
+
+public:
+    // Constructor
+    Book(const string& _title, const string& _author, const string& _category)
+        : title(_title), author(_author), category(_category), borrower("") {}
+
+    // Getters
+    string getTitle() const { return title; }
+    string getAuthor() const { return author; }
+    string getCategory() const { return category; }
+    string getBorrower() const { return borrower; }
+
+    // Method to register borrower
+    void registerBorrower(const string& _borrower) {
+        borrower = _borrower;
+    }
+};
+
+// Class to represent the Library
+class Library {
+private:
+    vector<Book> books;
+
+public:
+    // Method to add a book to the library
+    void addBook(const Book& newBook) {
+        books.push_back(newBook);
+        cout << "Book added successfully!" << endl;
+    }
+
+    // Method to search for a book by title
+    void searchBook(const string& title) {
+        bool found = false;
+        for (const auto& book : books) {
+            if (book.getTitle() == title) {
+                cout << "Book found!" << endl;
+                cout << "Title: " << book.getTitle() << endl;
+                cout << "Author: " << book.getAuthor() << endl;
+                cout << "Category: " << book.getCategory() << endl;
+                if (book.getBorrower() != "") {
+                    cout << "Borrowed by: " << book.getBorrower() << endl;
+                }
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            cout << "Book not found!" << endl;
+        }
+    }
+
+    // Method to display all books in the library
+    void displayBooks() {
+        if (books.empty()) {
+            cout << "Library is empty." << endl;
+        } else {
+            cout << "Books in the library:" << endl;
+            for (const auto& book : books) {
+                cout << "Title: " << book.getTitle() << endl;
+                cout << "Author: " << book.getAuthor() << endl;
+                cout << "Category: " << book.getCategory() << endl;
+                if (book.getBorrower() != "") {
+                    cout << "Borrowed by: " << book.getBorrower() << endl;
+                }
+                cout << "------------------------" << endl;
+            }
+        }
+    }
+};
+
+int main() {
+    Library library;
+
+    while (true) {
+        cout << "Library Management System" << endl;
+        cout << "1. Add Book" << endl;
+        cout << "2. Search Book" << endl;
+        cout << "3. Display Books" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice: ";
+
+        int choice;
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                string title, author, category;
+                cout << "Enter book title: ";
+                cin.ignore();
+                getline(cin, title);
+                cout << "Enter book author: ";
+                getline(cin, author);
+                cout << "Enter book category: ";
+                getline(cin, category);
+                Book newBook(title, author, category);
+                library.addBook(newBook);
+                break;
+            }
+            case 2: {
+                string title;
+                cout << "Enter book title to search for: ";
+                cin.ignore();
+                getline(cin, title);
+                library.searchBook(title);
+                break;
+            }
+            case 3:
+                library.displayBooks();
+                break;
+            case 4:
+                cout << "Exiting program..." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    return 0;
+}
